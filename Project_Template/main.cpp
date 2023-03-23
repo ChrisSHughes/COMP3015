@@ -12,6 +12,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
+	printf("beans");
 	scene = std::unique_ptr<Scene>(new SceneBasic_Uniform());
 
 

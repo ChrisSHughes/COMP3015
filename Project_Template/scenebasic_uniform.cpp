@@ -18,29 +18,45 @@ using std::endl;
 using glm::vec3;
 using glm::mat4;
 
-SceneBasic_Uniform::SceneBasic_Uniform() : torus(0.7f, 0.3f, 30, 30) {}  // lab1
+SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f, 10.0f, 100, 100) 
+{
+    ufo = ObjMesh::load("../Project_Template/media/ufo.obj", true);
+    ladymun = ObjMesh::load("../Project_Template/media/ladymun.obj", true);
+
+}
 
 
 /// <summary>
-/// red in model in init scene using a file reader lol
+/// read in model in init scene using a file reader lol
 /// put that model into the VAO Array
 /// </summary>
+
 void SceneBasic_Uniform::initScene()
 {
     compile();
     glEnable(GL_DEPTH_TEST);
 
-    model = mat4(1.0f);
-
-    model = glm::rotate(model, glm::radians(-35.0f), vec3(1.0f, 0.0f, 0.0f));
-
-    view = glm::lookAt(vec3(0.0f, 0.0f, 2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-
+    view = glm::lookAt(vec3(0.5f, 0.75f, 0.75f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     projection = mat4(1.0f);
 
-    prog.setUniform("LightPosition", glm::vec3(view * glm::vec4(5.0f, 5.0f, 2.0f, 1.0f)));
-    prog.setUniform("Kd", glm::vec3(view * glm::vec4(5.0f, 5.0f, 2.0f, 1.0f)));
-    prog.setUniform("Ld", glm::vec3(view * glm::vec4(5.0f, 5.0f, 2.0f, 1.0f)));
+    float x, z;
+    for (int i = 0; i < 3; i++)
+    {
+        std::stringstream name;
+        name << "Lights[" << i << "].Position";
+        x = 2.0f * cosf((glm::two_pi<float>() / 3) * i);
+        z = 3.0f * sinf((glm::two_pi<float>() / 3) * i);
+        prog.setUniform(name.str().c_str(), view * glm::vec4(x, 3.2f, z + 3.0f, 1.0f));
+    }
+
+    prog.setUniform("Lights[0].L", vec3(0.6f, 0.0f, 0.6f));
+    prog.setUniform("Lights[1].L", vec3(0.6f, 0.6f, 0.6f));
+    prog.setUniform("Lights[2].L", vec3(0.6f, 0.0f, 0.6f));
+    
+    
+    prog.setUniform("Lights[0].La", vec3(0.5f, 0.0f, 0.5f));
+    prog.setUniform("Lights[1].La", vec3(0.0f, 0.5f, 0.0f));
+    prog.setUniform("Lights[2].La", vec3(0.5f, 0.0f, 0.5f));
 
 
 #pragma region Lab1 Code - Render Triangle from set info
@@ -115,17 +131,7 @@ void SceneBasic_Uniform::compile()
 
 void SceneBasic_Uniform::update( float t )
 {
-#pragma region lab1 update for spinning triangle
 
-	////update your angle here
- //   if (m_animate) {
- //       angle += 0.001f;
-
- //       if (angle >= 360.0f) {
- //          angle -= 360.0f;
- //       }
- //   }
-#pragma endregion
 
 
 }
@@ -155,8 +161,51 @@ void SceneBasic_Uniform::render()
 
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
+    
+    /// <summary>
+    /// object 1 - a ufo
+    /// </summary>
+    prog.setUniform("Material.Kd", 0.7f, 0.0f, 0.0f); // diffuse
+    prog.setUniform("Material.Ks", 0.4f, 0.0f, 0.0f); // spec
+    prog.setUniform("Material.Ka", 0.0f, 0.0f, 0.5f);  // ambient
+    prog.setUniform("Material.Shininess", 200.0f);
+
+    model = mat4(1.0f);
+    model = glm::translate(model, vec3(-0.25f, -0.4f, -0.2f));
+    model = glm::rotate(model, glm::radians(35.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::scale(model, glm::vec3(0.03f, 0.03f, 0.03f));
     SetMatrices();
-    torus.render();
+    ufo->render();
+
+    /// <summary>
+    /// Objec 2 - woman
+    /// </summary>
+    prog.setUniform("Material.Kd", 0.1f, 0.2f, 0.2f);
+    prog.setUniform("Material.Ks", 0.1f, 0.2f, 0.5f);
+    prog.setUniform("Material.Ka", 0.9f, 0.2f, 0.1f);
+    prog.setUniform("Material.Shininess", 70.0f);
+
+    model = mat4(1.0f);
+    model = glm::translate(model, vec3(-0.4f, 0.18f, -0.4f));
+    model = glm::rotate(model, glm::radians(35.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+    SetMatrices();
+    ladymun->render();
+
+
+    /// <summary>
+    /// object 3 - the plane
+    /// </summary>
+    prog.setUniform("Material.Kd", 0.1f, 0.1f, 0.1f);
+    prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
+    prog.setUniform("Material.Ka", 0.1f, 0.1f, 0.1f);
+    prog.setUniform("Material.Shininess", 180.0f);
+
+    model = mat4(1.0f);
+    model = glm::translate(model, vec3(0.0f, -0.55f, 0.0f));
+    SetMatrices();
+    plane.render();
+
 }
 
 void SceneBasic_Uniform::SetMatrices() 

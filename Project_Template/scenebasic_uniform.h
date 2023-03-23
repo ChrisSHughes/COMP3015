@@ -6,7 +6,9 @@
 #include <glad/glad.h>
 #include "helper/glslprogram.h"
 #include "helper/torus.h"
-
+#include "helper/plane.h"
+#include "helper/objmesh.h"
+#include <sstream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -17,10 +19,11 @@ class SceneBasic_Uniform : public Scene
 private:
     glm::mat4 rotationMatrix;
     GLSLProgram prog;
-    //GLuint vaoHandle;  // lab1
-    //float angle;  // lab1
 
-    Torus torus;
+
+    Plane plane;
+    std::unique_ptr<ObjMesh> ufo; // wheel mesh
+    std::unique_ptr<ObjMesh> ladymun;
 
     void compile();
     void SetMatrices();

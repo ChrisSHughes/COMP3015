@@ -17,10 +17,13 @@ class SceneBasic_Uniform : public Scene
 private:
     glm::mat4 rotationMatrix;
     GLSLProgram prog;
-    GLuint vaoHandle;
-    float angle;
+    //GLuint vaoHandle;  // lab1
+    //float angle;  // lab1
+
+    Torus torus;
 
     void compile();
+    void SetMatrices();
 
 public:
     SceneBasic_Uniform();
@@ -29,6 +32,8 @@ public:
     void update( float t );
     void render();
     void resize(int, int);
+
+
 };
 
 #endif // SCENEBASIC_UNIFORM_H

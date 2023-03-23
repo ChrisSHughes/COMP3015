@@ -69,5 +69,6 @@ Torus::Torus(GLfloat outerRadius, GLfloat innerRadius, GLuint nsides, GLuint nri
     }
 
     initBuffers(&el, &p, &n, &tex);
+    render();
 }
 

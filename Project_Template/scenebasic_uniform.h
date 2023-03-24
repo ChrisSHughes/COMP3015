@@ -19,7 +19,7 @@ class SceneBasic_Uniform : public Scene
 private:
     glm::mat4 rotationMatrix;
     GLSLProgram prog;
-
+    
 
     Plane plane;
     std::unique_ptr<ObjMesh> ufo; // wheel mesh

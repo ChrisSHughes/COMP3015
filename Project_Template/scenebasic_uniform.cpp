@@ -1,5 +1,6 @@
 #include "scenebasic_uniform.h"
 #include "helper/torus.h"
+#include "helper/texture.h"
 
 #include<glm/glm.hpp>
 #include <cstdio>
@@ -36,27 +37,32 @@ void SceneBasic_Uniform::initScene()
     compile();
     glEnable(GL_DEPTH_TEST);
 
-    view = glm::lookAt(vec3(0.5f, 0.75f, 0.75f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    view = glm::lookAt(vec3(1.0f, 1.0f, 0.75f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     projection = mat4(1.0f);
 
     float x, z;
-    for (int i = 0; i < 3; i++)
-    {
-        std::stringstream name;
-        name << "Lights[" << i << "].Position";
-        x = 2.0f * cosf((glm::two_pi<float>() / 3) * i);
-        z = 3.0f * sinf((glm::two_pi<float>() / 3) * i);
-        prog.setUniform(name.str().c_str(), view * glm::vec4(x, 3.2f, z + 3.0f, 1.0f));
-    }
+    //for (int i = 0; i < 3; i++)
+    //{
+    //    std::stringstream name;
+    //    name << "Lights[" << i << "].Position";
+    //    x = 2.0f * cosf((glm::two_pi<float>() / 3) * i);
+    //    z = 3.0f * sinf((glm::two_pi<float>() / 3) * i);
+    //    prog.setUniform(name.str().c_str(), view * glm::vec4(x, 3.2f, z + 3.0f, 1.0f));
+    //}
 
-    prog.setUniform("Lights[0].L", vec3(0.6f, 0.0f, 0.6f));
-    prog.setUniform("Lights[1].L", vec3(0.6f, 0.6f, 0.6f));
-    prog.setUniform("Lights[2].L", vec3(0.6f, 0.0f, 0.6f));
+    prog.setUniform("Light.Position", vec3(0.0f, 200.0f, 0.0f));
+    prog.setUniform("Light.L", vec3(1.0f, 1.0f, 1.0f));
+    prog.setUniform("Light.La", vec3(0.4f, 0.4f, 0.4f));
+    prog.setUniform("Light.Ld", vec3(0.6f, 0.6f, 0.6f));
+    prog.setUniform("Light.Ls", vec3(20.9f, 20.9f, 20.9f));
+    //prog.setUniform("Lights[0].L", vec3(0.6f, 0.0f, 0.6f));
+    //prog.setUniform("Lights[1].L", vec3(0.6f, 0.6f, 0.6f));
+    //prog.setUniform("Lights[2].L", vec3(0.6f, 0.0f, 0.6f));
     
     
-    prog.setUniform("Lights[0].La", vec3(0.5f, 0.0f, 0.5f));
-    prog.setUniform("Lights[1].La", vec3(0.0f, 0.5f, 0.0f));
-    prog.setUniform("Lights[2].La", vec3(0.5f, 0.0f, 0.5f));
+    //prog.setUniform("Lights[0].La", vec3(0.5f, 0.0f, 0.5f));
+    //prog.setUniform("Lights[1].La", vec3(0.0f, 0.5f, 0.0f));
+    //prog.setUniform("Lights[2].La", vec3(0.5f, 0.0f, 0.5f));
 
 
 #pragma region Lab1 Code - Render Triangle from set info
@@ -165,10 +171,10 @@ void SceneBasic_Uniform::render()
     /// <summary>
     /// object 1 - a ufo
     /// </summary>
-    prog.setUniform("Material.Kd", 0.7f, 0.0f, 0.0f); // diffuse
-    prog.setUniform("Material.Ks", 0.4f, 0.0f, 0.0f); // spec
-    prog.setUniform("Material.Ka", 0.0f, 0.0f, 0.5f);  // ambient
-    prog.setUniform("Material.Shininess", 200.0f);
+    prog.setUniform("Material.Kd", 1.0f, 0.0f, 1.0f); // diffuse
+    prog.setUniform("Material.Ks", 1.0f, 1.0f, 1.0f); // spec
+    prog.setUniform("Material.Ka", 0.9f, 0.5f, 0.5f);  // ambient
+    prog.setUniform("Material.Shininess", 15.0f);
 
     model = mat4(1.0f);
     model = glm::translate(model, vec3(-0.25f, -0.4f, -0.2f));
@@ -180,10 +186,10 @@ void SceneBasic_Uniform::render()
     /// <summary>
     /// Objec 2 - woman
     /// </summary>
-    prog.setUniform("Material.Kd", 0.1f, 0.2f, 0.2f);
-    prog.setUniform("Material.Ks", 0.1f, 0.2f, 0.5f);
-    prog.setUniform("Material.Ka", 0.9f, 0.2f, 0.1f);
-    prog.setUniform("Material.Shininess", 70.0f);
+    prog.setUniform("Material.Kd", 0.1f, 1.5f, 0.1f);
+    prog.setUniform("Material.Ks", 1.0f, 1.0f, 1.5f);
+    prog.setUniform("Material.Ka", 0.9f, 0.5f, 0.5f);
+    prog.setUniform("Material.Shininess", 25.0f);
 
     model = mat4(1.0f);
     model = glm::translate(model, vec3(-0.4f, 0.18f, -0.4f));
@@ -196,14 +202,17 @@ void SceneBasic_Uniform::render()
     /// <summary>
     /// object 3 - the plane
     /// </summary>
-    prog.setUniform("Material.Kd", 0.1f, 0.1f, 0.1f);
-    prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
-    prog.setUniform("Material.Ka", 0.1f, 0.1f, 0.1f);
-    prog.setUniform("Material.Shininess", 180.0f);
+    prog.setUniform("Material.Kd", 0.8f, 0.0f, 0.0f);
+    prog.setUniform("Material.Ks", 0.3f, 0.9f, 0.3f);
+    prog.setUniform("Material.Ka", 0.1f, 0.1f, 0.8f);
+    prog.setUniform("Material.Shininess", 5.5f);
 
     model = mat4(1.0f);
     model = glm::translate(model, vec3(0.0f, -0.55f, 0.0f));
     SetMatrices();
+    GLuint texID = Texture::loadTexture("../Project_Template/media/Grass.png");
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texID);
     plane.render();
 
 }

@@ -21,8 +21,8 @@ using glm::mat4;
 
 SceneBasic_Uniform::SceneBasic_Uniform() : plane(10.0f, 10.0f, 100, 100) 
 {
-    ufo = ObjMesh::load("../Project_Template/media/ufo.obj", true);
-    ladymun = ObjMesh::load("../Project_Template/media/ladymun.obj", true);
+    ufo = ObjMesh::load("media/ufo.obj", true);
+    ladymun = ObjMesh::load("media/ladymun.obj", true);
 
 }
 

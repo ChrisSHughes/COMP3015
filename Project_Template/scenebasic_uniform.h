@@ -14,13 +14,9 @@
 
 class SceneBasic_Uniform : public Scene
 {
-
-
 private:
     glm::mat4 rotationMatrix;
     GLSLProgram prog;
-    
-
     Plane plane;
     std::unique_ptr<ObjMesh> ufo; // wheel mesh
     std::unique_ptr<ObjMesh> ladymun;
@@ -30,13 +26,10 @@ private:
 
 public:
     SceneBasic_Uniform();
-
     void initScene();
     void update( float t );
     void render();
     void resize(int, int);
-
-
 };
 
 #endif // SCENEBASIC_UNIFORM_H

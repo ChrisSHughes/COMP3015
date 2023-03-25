@@ -1,5 +1,0 @@
-﻿  scenebasic_uniform.cpp
-C:\COMP3015\Project_Template\scenebasic_uniform.cpp(18,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\COMP3015\Project_Template\scenebasic_uniform.cpp(43,14): warning C4101: 'z': unreferenced local variable
-C:\COMP3015\Project_Template\scenebasic_uniform.cpp(43,11): warning C4101: 'x': unreferenced local variable
-  Project_Template.vcxproj -> C:\COMP3015\Project_Template\x64\Debug\Project_Template.exe

@@ -17,7 +17,7 @@ This project uses a Vertices and Fragment shader file to calculate the Ambient, 
 
 <H1> What do i expect to get? </H1>
 
-I imagine i will probably get around 40 - 46 marks for this module, due to how difficult it was to learn this.
+I imagine i will probably get around 40 - 46 marks for this module, due to how difficult it was to learn this. I found it incredibly difficult to be learning both c++ AND OpenGL at the same time.
 
 
 

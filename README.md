@@ -16,6 +16,9 @@ Initially this project started with a vertex array which was used to render a tr
 This project uses a Vertices and Fragment shader file to calculate the Ambient, Diffuse and Specular lighting, and applies it to the Objects in the scene. The lighting valuers are multiplied with the corrisponding Matarial values given to each object to change how the light interacts with the object.
 
 <H1> What do i expect to get? </H1>
+
 I imagine i will probably get around 40 - 46 marks for this module, due to how difficult it was to learn this.
+
+
 
 Youtube Video: https://www.youtube.com/watch?v=3IWmibEGjVI 

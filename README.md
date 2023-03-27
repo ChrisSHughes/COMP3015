@@ -3,7 +3,7 @@ Repo for COMP3015 coursework
 
 This project was built using Visual Studio's 2019, on a Windows 10 pc.
 
-<H!> How To Run: </H1>
+<H1> How To Run: </H1>
 Download this repo, and unzip the Comp3015.zip file.
 
 Inside this file there is an Executable for Project_Template. Double click this .exe file to run the project.

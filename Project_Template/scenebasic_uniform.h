@@ -25,6 +25,8 @@ private:
     SkyBox sky; //skybox
     float angle, tPrev, rotSpeed;
 
+    GLuint noiseTexture;
+
     void compile();
     void SetMatrices();
 

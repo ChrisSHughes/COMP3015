@@ -16,6 +16,7 @@ using std::endl;
 #include "helper/glutils.h"
 
 #include <glm/gtc/matrix_transform.hpp>;
+#include "helper/noisetex.h"
 using glm::vec3;
 using glm::vec4;
 using glm::mat4;
@@ -71,7 +72,9 @@ void SceneBasic_Uniform::initScene()
     textureIDs[0] = Texture::loadTexture("../Project_Template/media/texture/grass/grass.png");
     textureIDs[1] = Texture::loadCubeMap("../Project_Template/media/texture/cubemap/skybox/sky");
     textureIDs[2] = Texture::loadTexture("../Project_Template/media/white.png");
-    textureIDs[3] = Texture::loadTexture("../Project_Template/media/granit.png");
+    textureIDs[3] = Texture::loadTexture("../Project_Template/media/granite.png");
+
+    noiseTexture = NoiseTex::generate2DTex(8.0f);
 }
 
 void SceneBasic_Uniform::compile()
@@ -113,11 +116,15 @@ void SceneBasic_Uniform::render()
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
 
+
+
     /// <summary>
     /// skybox render
     /// </summary>
     vec3 cameraPos = vec3(1.0f * cos(angle), 0.5f, 1.0f * sin(angle));
     view = glm::lookAt(cameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+
+    prog.setUniform("NoiseAggression", 0.2f);
 
     prog.use();
     model = mat4(1.0f);
@@ -126,6 +133,10 @@ void SceneBasic_Uniform::render()
     // Activate and bind texture
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textureIDs[1]);
+
+    //do magic clouds
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, noiseTexture);
 
     sky.render();
 
@@ -137,6 +148,7 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Ks", 1.0f, 1.0f, 1.0f); // spec
     prog.setUniform("Material.Ka", 0.9f, 0.5f, 0.5f);  // ambient
     prog.setUniform("Material.Shininess", 15.0f);
+    prog.setUniform("NoiseAggression", 0.0f);
 
     model = mat4(1.0f);
     model = glm::translate(model, vec3(-0.25f, -0.4f, -0.2f));
@@ -157,6 +169,8 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Ks", 1.0f, 1.0f, 1.0f);
     prog.setUniform("Material.Ka", 0.8f, 0.8f, 0.8f);
     prog.setUniform("Material.Shininess", 200.0f);
+    prog.setUniform("NoiseAggression", 0.0f);
+
 
     model = mat4(1.0f);
     model = glm::translate(model, vec3(-0.25f, 0.17f, -0.2f));
@@ -178,6 +192,8 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Ks", 0.6f, 0.6f, 0.3f);
     prog.setUniform("Material.Ka", 0.7f, 0.7f, 0.7f);
     prog.setUniform("Material.Shininess",180.5f);
+    prog.setUniform("NoiseAggression", 0.0f);
+
 
     model = mat4(1.0f);
     model = glm::translate(model, vec3(0.0f, -1.0f, 0.0f));

@@ -4,10 +4,11 @@ layout (location = 0) in vec3 VertexPosition;
 layout (location = 1) in vec3 VertexNormal;
 layout (location = 2) in vec2 VertexTextureCoord;
 
+
 layout (binding = 0) uniform sampler2D Texture1;
 
 out vec3 Colour;
-
+out vec3 Vec;
 
 uniform mat3 NormalMatrix;
 uniform mat4 ModelViewMatrix;
@@ -21,6 +22,13 @@ uniform struct LightInfo
     vec3 Ls; //Specular Light intensity
     vec3 L; // defuse and spec light intensity
 } Light;
+
+uniform struct FogInfo
+{
+    float MaxDistance;
+    float MinDistance;
+    vec3 Colour;
+} Fog;
 
 uniform struct MaterialInfo
 {
@@ -36,7 +44,7 @@ vec3 PhongModel (vec3 position, vec3 n)
     //calculate ambient here, to access each La light value
 
     vec3 texColour = texture(Texture1, VertexTextureCoord).rgb;
-    vec3 ambient = Material.Ka * Light.La;
+    vec3 ambient = texColour * Light.La;
 
     //vec3 s = vec3(Lights[light].Position) - ( position * Lights[light].Position.w ); //find out s vector
     vec3 s = vec3(Light.Position) - ( position); //find out s vector
@@ -57,15 +65,22 @@ vec3 PhongModel (vec3 position, vec3 n)
     return ambient+diffuse+spec;
 }
 
-void main()
-{
+void main() {
+    //calculating fog
+    float distance = abs(VertexPosition.z);
+    float fogValue = (Fog.MaxDistance - distance) / (Fog.MaxDistance - Fog.MinDistance);
+    fogValue = clamp(fogValue, 0.0, 1.0);
+
+    Vec = VertexPosition;
     vec3 n = normalize( NormalMatrix * VertexNormal );
     vec4 p = normalize( ModelViewMatrix * vec4( VertexPosition, 1.0 ) );
 
     //vec3 camCoords = vec3(0.0);
 
     Colour = vec3(0.0);
-    Colour = PhongModel(p.xyz, n);
+    Colour += PhongModel(p.xyz, n);
+
+    Colour = mix(Fog.Colour, Colour, fogValue);
 
 //    for (int i = 0; i < 3; i++)
 //    {

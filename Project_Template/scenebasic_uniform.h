@@ -11,6 +11,7 @@
 #include <sstream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "helper/skybox.h"
 
 class SceneBasic_Uniform : public Scene
 {
@@ -21,10 +22,14 @@ private:
     std::unique_ptr<ObjMesh> ufo; // wheel mesh
     std::unique_ptr<ObjMesh> ladymun;
 
+    SkyBox sky; //skybox
+    float angle, tPrev, rotSpeed;
+
     void compile();
     void SetMatrices();
 
 public:
+    GLuint textureIDs[4];
     SceneBasic_Uniform();
     void initScene();
     void update( float t );

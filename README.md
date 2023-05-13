@@ -6,7 +6,7 @@ This project was built using Visual Studio's 2019, on a Windows 10 pc.
 <H1> How To Run: </H1>
 Download this repo, and unzip the Comp3015.zip file.
 
-Inside this file there is an Executable for Project_Template. Double click this .exe file to run the project.
+Inside this file there is a build folder. Inside this folder there is an Executable for Project_Template. Double click this .exe file to run the project.
 
 <H1> What is it? </H1>
 This project uses c++ and OpenGL to render custom Objects from .obj files and applies lighting and shaders to them. This project has 2 custom object files for a Womans Head, and a UFO. This project uses a Phong Model Shader to apply lighting to objects, using Ambient, Diffuse and Specular lighting.
